@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Determinante de matrices NXM</title>
+    <meta charset='utf-8'>
+    <link href="style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <input class="boton-central" onclick="creandoMatrices()" type="button" value="Crear Matriz">
+    <br>
+    <div align="center">
+        <div align="center" class="left panel">
+            <h5>Dimensiones de la matriz</h5>
+            <form class="formulario" id="dimensionesA">
+                Filas:
+                <br>
+                <input name="filas" size="5" type="text">
+                <br> Columnas:
+                <br>
+                <input name="columnas" size="5" type="text">
+            </form>
+            <hr class="percent" />
+            <table id="matrizA"></table>
+        </div>
+        <div align="right" class="right panel">
+            <hr class="percent" />
+        </div>
+    </div>
+    <div id="container"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
