@@ -142,7 +142,7 @@ function creandoMatrices() {
 function productoria(matriz, sigma, n) {
   producto = 1
   for (var i = 0; i < n; i++) {
-    console.log(matriz,sigma,sigma[i],i)
+    //console.log(matriz,sigma,sigma[i],i)
     producto = producto * matriz[sigma[i]-1][i]
   }
   return producto
@@ -225,9 +225,9 @@ function determinante(matriz) {
   var permutaciones = permutator(sigma)
   for (var a = 0; a < permutaciones.length; a++) {
     var sigma_a = permutaciones[a]
-    sgn = permutationSign(sigma_a)
-    prod = productoria(matriz,sigma_a,n)
-    console.log("hi", sgn, prod)
+    var sgn = permutationSign(sigma_a)
+    var prod = productoria(matriz, sigma_a, n)
+    //console.log("sig", sgn, prod)
     sumatoria += sgn * prod
   }
   return sumatoria
