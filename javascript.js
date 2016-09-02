@@ -161,7 +161,7 @@ function rem(a, b) {
 }
 
 //http://math.stackexchange.com/questions/65923/how-does-one-compute-the-sign-of-a-permutation#65938
-function permutationSign(p) {
+function permutationSignBad(p) {
   var n = p.length
   var visited = new Array()
   for (var i = 0; i < n; i++) {
@@ -185,6 +185,20 @@ function permutationSign(p) {
   return sgn
 }
 
+//http://math.stackexchange.com/questions/65923/how-does-one-compute-the-sign-of-a-permutation
+function permutationSign(sigma) {
+  var productoria = 1
+  for (var i = 0; i < sigma.length; i++) {
+    for (var j = 0; j < sigma.length; j++) {
+      if (i < j) {
+        var frac = (sigma[i] - sigma[j]) / (i - j)
+        productoria = productoria * frac
+      }
+    }
+  }
+  return productoria
+}
+
 //http://stackoverflow.com/questions/9960908/permutations-in-javascript
 function permutator(inputArr) {
   var results = []
@@ -206,14 +220,15 @@ function permutator(inputArr) {
 //https://es.wikipedia.org/wiki/F%C3%B3rmula_de_Leibniz_para_el_c%C3%A1lculo_de_determinantes
 function determinante(matriz) {
   var sumatoria = 0
-  n = matriz.length
-  sigma = S(n)
-  permutaciones = permutator(sigma)
+  var n = matriz.length
+  var sigma = S(n)
+  var permutaciones = permutator(sigma)
   for (var a = 0; a < permutaciones.length; a++) {
-    var sigmaa = permutaciones[a]
-    sgn = -permutationSign(sigmaa)
-    console.log("hi", sgn, sigmaa)
-    sumatoria += sgn*productoria(matriz,sigmaa,n)
+    var sigma_a = permutaciones[a]
+    sgn = permutationSign(sigma_a)
+    prod = productoria(matriz,sigma_a,n)
+    console.log("hi", sgn, prod)
+    sumatoria += sgn * prod
   }
   return sumatoria
 }
