@@ -13,6 +13,7 @@ function dibujarMatriz(filas, columnas, tabla) {
     }
   }
 }
+
 var es = {
   vacio: function(str) {
     if (str === '' || str === null) {
@@ -30,6 +31,13 @@ var es = {
   },
   numero: function(str) {
     if (str === parseFloat(str).toString()) {
+      return true
+    } else {
+      return false
+    }
+  },
+  par: function(num) {
+    if(num %2 === 0){
       return true
     } else {
       return false
@@ -93,32 +101,27 @@ function convertirAArreglo(filas, columnas, tabla) {
       arreglo[i][j] = tabla.querySelectorAll('[data-fila="' + i + '"][data-columna="' + j + '"]')[0].value
     }
   }
-
-  return arreglo;
-
-
-}
-
-function ponerEnTabla(matriz, tabla) {
-  for (i = 0; i < matriz.length; i++) {
-    for (j = 0; j < matriz[0].length; j++) {
-      tabla.querySelectorAll('[data-fila="' + i + '"][data-columna="' + j + '"]')[0].value = matriz[i][j]
-    }
-  }
+  return arreglo
 }
 
 function creandoMatrices() {
-  window.alert("Ingresaste Genial")
+  //window.alert("Ingresaste Genial")
   var formulario = document.getElementById('dimensionesA')
-  var filasA = formulario.elements['filas'].value
-  var columnasA = formulario.elements['columnas'].value
-  var matrizA = document.getElementById("matrizA")
+  var filasA = formulario.elements['size'].value
+  var columnasA = filasA
+  var matrizA = document.getElementById('matrizA')
   try {
     if (validarVacio([filasA, columnasA])) {
       throw new Error('Algunos campos se encuentran vacíos')
     }
     if (!validarEntero([filasA, columnasA])) {
       throw new Error('Algunos campos no son enteros')
+    }
+    if (filasA != columnasA) {
+      throw new Error('La matriz no es cuadrada')
+    }
+    if (filasA <= 1) {
+      throw new Error('La matriz es unidimensional o menor a cero')
     }
   } catch (e) {
     window.alert(e)
@@ -136,25 +139,83 @@ function creandoMatrices() {
   document.getElementById('container').appendChild(boton)
 }
 
-function sumatoria(i, j, matrizA) {
-  //https://es.wikipedia.org/wiki/Multiplicaci%C3%B3n_de_matrices
-  var n = matrizB.length //o matrizA[0].length
-  var sumatoria = 0
-  contador += 2
-  for (var r = 0; r < n; r++) {
-    contador += 8
-    //  sumatoria += parseFloat(matrizA[i][r]) * parseFloat(matrizB[r][j])
+function productoria(matriz, sigma, n) {
+  producto = 1
+  for (var i = 0; i < n; i++) {
+    console.log(matriz,sigma,sigma[i],i)
+    producto = producto * matriz[sigma[i]-1][i]
   }
-  //f = ((filasA * ((9 * columnasB) + 8)) + 4) * matrizB.length + 6;
-  f = ((n * ((9 * n) + 8)) + 4) * matrizB.length + 6
-  return sumatoria
+  return producto
 }
 
-function dibujarArregloMatriz(matriz, tabla) {
-  var filas = matriz.length
-  var columnas = matriz[0].length
-  dibujarMatriz(filas, columnas, tabla)
-  ponerEnTabla(matriz, tabla)
+function S(n) {
+  var arreglo = new Array()
+  for (var i = 1; i <= n; i++) {
+    arreglo.push(i)
+  }
+  return arreglo
+}
+
+function rem(a, b) {
+  return a % b
+}
+
+//http://math.stackexchange.com/questions/65923/how-does-one-compute-the-sign-of-a-permutation#65938
+function permutationSign(p) {
+  var n = p.length
+  var visited = new Array()
+  for (var i = 0; i < n; i++) {
+    visited[i] = false
+  }
+  var sgn = 1
+  for (var k = 0; k < n; k++) {
+    if (!visited[i]) {
+      var next = k
+      var L = 0
+      while (!visited[next]) {
+        L = L + 1
+        visited[next] = true
+        next = p[next]
+      }
+      if (rem(L,2) === 0) {
+        sgn = -sgn;
+      }
+    }
+  }
+  return sgn
+}
+
+//http://stackoverflow.com/questions/9960908/permutations-in-javascript
+function permutator(inputArr) {
+  var results = []
+  function permute(arr, memo) {
+    var cur, memo = memo || []
+    for (var i = 0; i < arr.length; i++) {
+      cur = arr.splice(i, 1)
+      if (arr.length === 0) {
+        results.push(memo.concat(cur))
+      }
+      permute(arr.slice(), memo.concat(cur))
+      arr.splice(i, 0, cur[0])
+    }
+    return results
+  }
+  return permute(inputArr)
+}
+
+//https://es.wikipedia.org/wiki/F%C3%B3rmula_de_Leibniz_para_el_c%C3%A1lculo_de_determinantes
+function determinante(matriz) {
+  var sumatoria = 0
+  n = matriz.length
+  sigma = S(n)
+  permutaciones = permutator(sigma)
+  for (var a = 0; a < permutaciones.length; a++) {
+    var sigmaa = permutaciones[a]
+    sgn = -permutationSign(sigmaa)
+    console.log("hi", sgn, sigmaa)
+    sumatoria += sgn*productoria(matriz,sigmaa,n)
+  }
+  return sumatoria
 }
 
 function calcular(filasA, columnasA, matrizA) {
@@ -170,28 +231,12 @@ function calcular(filasA, columnasA, matrizA) {
     window.alert(e)
     return e
   }
-  //console.log(matrizA, matrizB)
-  document.getElementById('container').innerHTML = ''
-    //https://algoritmiafordummies.wikispaces.com/Algoritmo+del+producto+de+matrices
-  var matrizC = new Array()
-  var filasA = matrizA.length
-  contador += 2;
-  for (var i = 0; i < filasA; i++) {
-    contador = contador + 4;
-    for (var j = 0; j < columnasB; j++) {
-      contador = contador + 9;
-      if (matrizC[i] === undefined) {
-        matrizC[i] = new Array()
-      }
-      matrizC[i][j] = sumatoria(i, j, matrizA)
-    }
-  }
-  //console.log(matrizC)
-  var tabla = document.createElement('table')
-  tabla.setAttribute('class', 'center')
-  document.getElementById('container').appendChild(tabla)
-  dibujarArregloMatriz(matrizC, tabla)
-  window.alert("Contador " + contador + "\n" + "Ecuacion Temporal " + f)
-  contador = 0
-  //window.alert("Funcion Temporal."+f);
+
+  //https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+  det = determinante(matrizA)
+
+  var h1 = document.createElement('h1')
+  h1.innerHTML = det
+  document.getElementById('result').innerHTML = ''
+  document.getElementById('result').appendChild(h1)
 }
