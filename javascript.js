@@ -114,7 +114,6 @@ function creandoMatrices() {
     var filasA = formulario.elements['filas'].value
     var columnasA = formulario.elements['columnas'].value
     var matrizA = document.getElementById("matrizA")
-    var formulario = document.getElementById('dimensionesB')
     try {
         if (validarVacio([filasA, columnasA])) {
             throw new Error('Algunos campos se encuentran vacíos')
@@ -130,7 +129,7 @@ function creandoMatrices() {
     var boton = document.createElement('input')
     boton.setAttribute('type', 'button')
     boton.setAttribute('class', 'boton-central')
-    boton.setAttribute('value', 'Calcular Multiplicación')
+    boton.setAttribute('value', 'Calcular Determinante')
     boton.onclick = function() {
         calcular(filasA, columnasA, matrizA)
     }
