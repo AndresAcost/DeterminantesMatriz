@@ -1,5 +1,4 @@
-var contador = 0;
-var f = 0;
+
 function dibujarMatriz(filas, columnas, tabla) {
     tabla.innerHTML = "";
     for (i = 0; i < filas; i++) {
@@ -15,7 +14,6 @@ function dibujarMatriz(filas, columnas, tabla) {
         }
     }
 }
-
 var es = {
     vacio: function(str) {
         if (str === '' || str === null) {
@@ -39,6 +37,7 @@ var es = {
         }
     }
 }
+
 function validarVacio(parametros) {
     for (var i = 0; i < parametros.length; i++) {
         if (typeof(parametros[i]) === "object") {
@@ -108,11 +107,14 @@ function ponerEnTabla(matriz, tabla) {
         }
     }
 }
+
 function creandoMatrices() {
+  alert("Ingresaste Genial")
     var formulario = document.getElementById('dimensionesA')
     var filasA = formulario.elements['filas'].value
     var columnasA = formulario.elements['columnas'].value
     var matrizA = document.getElementById("matrizA")
+    var formulario = document.getElementById('dimensionesB')
     try {
         if (validarVacio([filasA, columnasA])) {
             throw new Error('Algunos campos se encuentran vacíos')
@@ -138,6 +140,13 @@ document.getElementById('container').innerHTML = ''
 
 function sumatoria(i, j, matrizA) {
     //https://es.wikipedia.org/wiki/Multiplicaci%C3%B3n_de_matrices
+    var n = matrizB.length //o matrizA[0].length
+    var sumatoria = 0;
+    contador=contador+2;
+    for (var r = 0; r < n; r++) {
+      contador=contador+8;
+          //  sumatoria += parseFloat(matrizA[i][r]) * parseFloat(matrizB[r][j])
+    }
     //f = ((filasA * ((9 * columnasB) + 8)) + 4) * matrizB.length + 6;
     f = ((n * ((9 * n) + 8)) + 4) * matrizB.length + 6;
     return sumatoria
@@ -171,10 +180,21 @@ function calcular(filasA, columnasA, matrizA) {
     var matrizC = new Array()
     var filasA = matrizA.length
     contador+=2;
-
+    for (var i = 0; i < filasA; i++) {
+      contador=contador+4;
+        for (var j = 0; j < columnasB; j++) {
+          contador=contador+9;
+            if (matrizC[i] === undefined) {
+                matrizC[i] = new Array()
+            }
+            matrizC[i][j] = sumatoria(i, j, matrizA)
+        }
+    }
+    //console.log(matrizC)
     var tabla = document.createElement('table')
     tabla.setAttribute('class', 'center')
     document.getElementById('container').appendChild(tabla)
+    dibujarArregloMatriz(matrizC, tabla)
     window.alert("Contador " + contador + "\n" + "Ecuacion Temporal " + f);
     contador=0;
     //window.alert("Funcion Temporal."+f);
