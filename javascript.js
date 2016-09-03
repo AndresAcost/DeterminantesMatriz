@@ -1,3 +1,5 @@
+var cont = 0
+
 function dibujarMatriz(filas, columnas, tabla) {
   tabla.innerHTML = "";
   for (i = 0; i < filas; i++) {
@@ -141,7 +143,9 @@ function creandoMatrices() {
 
 function productoria(matriz, sigma, n) {
   producto = 1
+  cont += 3
   for (var i = 0; i < n; i++) {
+    cont += 7
     //console.log(matriz,sigma,sigma[i],i)
     producto = producto * matriz[sigma[i]-1][i]
   }
@@ -150,7 +154,9 @@ function productoria(matriz, sigma, n) {
 
 function S(n) {
   var arreglo = new Array()
+  cont += 3
   for (var i = 1; i <= n; i++) {
+    cont += 3
     arreglo.push(i)
   }
   return arreglo
@@ -188,8 +194,11 @@ function permutationSignOpt1(p) {
 //http://math.stackexchange.com/questions/65923/how-does-one-compute-the-sign-of-a-permutation
 function permutationSign(sigma) {
   var productoria = 1
+  cont += 3
   for (var i = 0; i < sigma.length; i++) {
+    cont += 4
     for (var j = 0; j < sigma.length; j++) {
+      cont += 2
       if (i < j) {
         var frac = (sigma[i] - sigma[j]) / (i - j)
         productoria = productoria * frac
@@ -202,9 +211,12 @@ function permutationSign(sigma) {
 //http://stackoverflow.com/questions/9960908/permutations-in-javascript
 function permutator(inputArr) {
   var results = []
+  cont += 1
   function permute(arr, memo) {
     var cur, memo = memo || []
+    cont += 3
     for (var i = 0; i < arr.length; i++) {
+      cont += 4
       cur = arr.splice(i, 1)
       if (arr.length === 0) {
         results.push(memo.concat(cur))
@@ -223,7 +235,9 @@ function determinante(matriz) {
   var n = matriz.length
   var sigma = S(n)
   var permutaciones = permutator(sigma)
+  cont += 6
   for (var a = 0; a < permutaciones.length; a++) {
+    cont += 6
     var sigma_a = permutaciones[a]
     var sgn = permutationSign(sigma_a)
     var prod = productoria(matriz, sigma_a, n)
@@ -248,7 +262,9 @@ function calcular(filasA, columnasA, matrizA) {
   }
 
   //https://en.wikipedia.org/wiki/Leibniz_formula_for_determinants
+  cont = 0
   det = determinante(matrizA)
+  window.alert(cont)
 
   var h1 = document.createElement('h1')
   h1.innerHTML = det
