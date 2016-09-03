@@ -161,7 +161,7 @@ function rem(a, b) {
 }
 
 //http://math.stackexchange.com/questions/65923/how-does-one-compute-the-sign-of-a-permutation#65938
-function permutationSignBad(p) {
+function permutationSignOpt1(p) {
   var n = p.length
   var visited = new Array()
   for (var i = 0; i < n; i++) {
@@ -169,7 +169,7 @@ function permutationSignBad(p) {
   }
   var sgn = 1
   for (var k = 0; k < n; k++) {
-    if (!visited[i]) {
+    if (!visited[k]) {
       var next = k
       var L = 0
       while (!visited[next]) {
